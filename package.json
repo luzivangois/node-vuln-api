@@ -1,0 +1,14 @@
+{
+  "name": "node-vuln-api",
+  "version": "1.0.0",
+  "description": "API em Node.JS - Lab com vulnerabilidades",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luzivan Gois",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
