@@ -1,13 +1,14 @@
-const sqlite3 = require('sqlite3').verbose()
-const db = new sqlite3.Database('./database/database.db')
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
-db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS users (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    login TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
-  )`)
+mongoose.connect('mongodb://localhost:27017/database')
+
+const userSchema = new Schema({
+  name: { type: String, required: true},
+  login: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
 })
 
-module.exports = db
+const User = mongoose.model('User', userSchema)
+
+module.exports = User
