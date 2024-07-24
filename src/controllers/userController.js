@@ -25,11 +25,13 @@ exports.login = async (req, res) => {
 
   try {
     const user = await User.findOne({ login })
-    if (!user) return res.status(404).send({ message: 'Usuário não encontrado.' })
-    
-    const token = jwt.sign({ id: user._id, sub: user.login }, SECRET_KEY, { expiresIn: 600 })
-    
-    if(findUser) {
+    const pass = await User.findOne({ password })
+    if (!user) {
+      return res.status(404).send({ message: 'Usuário não encontrado.' })
+    } else if (!pass) {
+      return res.status(400).send({ message: 'Senha Incorreta!' })
+    } else if (findUser) {
+      const token = jwt.sign({ id: user._id, sub: user.login }, SECRET_KEY, { expiresIn: 600 })
       res.send({
         message: "Login Realizado com Sucesso",
         id: findUser._id,
@@ -39,7 +41,6 @@ exports.login = async (req, res) => {
     }else{
       res.status(500).send({ message: 'Erro ao buscar o usuário.' })
     }
-    
   } catch (err) {
     res.status(500).send({ message: 'Erro ao buscar o usuário.' })
   }
