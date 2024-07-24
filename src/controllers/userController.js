@@ -80,3 +80,41 @@ exports.allUsers = async (req, res) => {
     res.status(500).send({ message: 'Erro ao buscar usuários.' })
   }
 }
+
+exports.updatePass = async (req, res) => {
+  const { id } = req.params
+  const { password } = req.body
+
+  try {
+    const user = await User.findById(id)
+
+    if (!user) {
+      return res.status(404).send({ message: 'Usuário não encontrado!'})
+    }
+
+    user.password = password
+    await user.save()
+
+    res.status(200).send({ message: 'Senha atualizada com sucesso!'})
+  } catch (err) {
+    res.status(500).send({ message: 'Erro ao atualizar a senha do usuário.'})
+  }
+}
+
+exports.deleteUser = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+
+    if (!user) {
+      return res.status(404).send({ message: 'Usuário não encontrado!'})
+    }
+
+    await user.deleteOne()
+
+    res.status(204).send({ message: 'Usuário deletado com sucesso!'})
+  } catch (err) {
+    res.status(500).send({ message: 'Erro ao deletar usuário.'})
+  }
+}
