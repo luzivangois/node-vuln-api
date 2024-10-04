@@ -59,7 +59,8 @@ exports.userId = async (req, res) => {
         message: 'Usuário encontrado com Sucesso!',
         id: user._id,
         login: user.login,
-        password: user.password
+        password: user.password,
+        isAdmin: user.isAdmin
       })    }
   } catch (err) {
     res.status(500).send({ message: 'Erro ao buscar usuários!' })

@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/routes')
 const cors = require('cors')
 
 const app = express()
@@ -14,7 +14,7 @@ app.use(cors({
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/auth', userRoutes)
+app.use('/api', userRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`)
