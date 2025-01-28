@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "a6f65b6d-d561-4a22-8f34-72f219ebe34c",
+		"name": "advocacia-associados node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27560622"
+	},
+	"item": [
+		{
+			"name": "Usuário",
+			"item": [
+				{
+					"name": "Criar Usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Usuario\",\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\",\r\n    \"isAdmin\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar Todos Usuários",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTkyOTA4NDc5NjA3MTkzNDE5OTI4NSIsInN1YiI6Imx1eml2YW4iLCJpYXQiOjE3MzgwOTE1MzAsImV4cCI6MTczODA5MjEzMH0.GbPHr5PmxQq75W5VyOFqf-U81xzkznkZPde7f7-ne0A"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/allusers"
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar Usuário por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/userid/{id}"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Senha",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"senha\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/updatepass/{id}"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Usuário",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/deluser/{id}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Arquivo",
+			"item": [
+				{
+					"name": "Enviar Documento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZHZvY2FjaWEtYXBpIiwic3ViIjoibHV6aXZhbjIiLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MjEwNjYwOTB9.sosIOQOv4J0JR4x9fkT-8m39jrP9GQU18yjHnyr1Y7M"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "name",
+									"value": "senhasluzivan.pdf",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8080/api/upload"
+					},
+					"response": []
+				},
+				{
+					"name": "Exibir Conteúdo do Arquivo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://localhost:8080/api/read/{filename}"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
