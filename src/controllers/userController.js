@@ -103,19 +103,36 @@ exports.updatePass = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
+  const auth = req.headers.authorization
+
+  if (!auth) {
+    return res.status(401).send({ message: 'Token não fornecido!' })
+  }
+
+  const token = auth.split(' ')[1]
 
   try {
+    const decoded = jwt.verify(token, SECRET_KEY)
+
+    if (!decoded.isAdmin) {
+      return res.status(403).send({ message: 'Acesso negado! Apenas administradores podem deletar usuários.' })
+    }
+
     const user = await User.findById(id)
 
     if (!user) {
-      return res.status(404).send({ message: 'Usuário não encontrado!'})
+      return res.status(404).send({ message: 'Usuário não encontrado!' })
     }
 
     await user.deleteOne()
 
-    res.status(204).send({ message: 'Usuário deletado com sucesso!'})
+    res.status(204).send({ message: 'Usuário deletado com sucesso!' })
   } catch (err) {
-    res.status(500).send({ message: 'Erro ao deletar usuário.'})
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).send({ message: 'Token inválido!' })
+    }
+    console.error(err);
+    res.status(500).send({ message: 'Erro ao deletar usuário.' })
   }
 }
