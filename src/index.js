@@ -14,7 +14,7 @@ app.use(cors({
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/api', userRoutes)
+app.use('/auth', userRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`)

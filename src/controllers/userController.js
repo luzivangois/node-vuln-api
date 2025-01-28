@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
     if (!user) {
       return res.status(404).send({ message: 'Usuário não encontrado.' })
     } else if (!pass) {
-      return res.status(400).send({ message: 'Senha Incorreta!' })
+      return res.status(401).send({ message: 'Senha Incorreta!' })
     } else if (findUser) {
       const token = jwt.sign({ id: user._id, sub: user.login }, SECRET_KEY, { expiresIn: 600 })
       res.send({
