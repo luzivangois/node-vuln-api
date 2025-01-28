@@ -4,10 +4,10 @@ const User = require('../models/user')
 const SECRET_KEY = '0123456789012345678901234567890101234567890123456789012345678901'
 
 exports.register = async (req, res) => {
-  const { name, login, password, } = req.body
+  const { name, login, password, isAdmin } = req.body
 
   try {
-    const user = new User({ name, login, password })
+    const user = new User({ name, login, password, isAdmin })
     await user.save()
 
     res.status(201).send({ message: 'Usuário registrado com sucesso!' })
@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
     } else if (!pass) {
       return res.status(401).send({ message: 'Senha Incorreta!' })
     } else if (findUser) {
-      const token = jwt.sign({ id: user._id, sub: user.login }, SECRET_KEY, { expiresIn: 600 })
+      const token = jwt.sign({ id: user._id, sub: user.login, isAdmin: user.isAdmin }, SECRET_KEY, { expiresIn: 600 })
       res.send({
         message: 'Login Realizado com Sucesso',
         id: findUser._id,
