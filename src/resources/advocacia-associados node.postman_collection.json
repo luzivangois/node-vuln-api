@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Usuario\",\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\",\r\n    \"isAdmin\": false\r\n}",
+							"raw": "{\r\n    \"name\": \"Usuário\",\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\",\r\n    \"isAdmin\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -51,7 +51,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3OTkyOTA4NDc5NjA3MTkzNDE5OTI4NSIsInN1YiI6Imx1eml2YW4iLCJpYXQiOjE3MzgwOTE1MzAsImV4cCI6MTczODA5MjEzMH0.GbPHr5PmxQq75W5VyOFqf-U81xzkznkZPde7f7-ne0A"
+								"token": ""
 							}
 						},
 						"method": "GET",
@@ -125,7 +125,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhZHZvY2FjaWEtYXBpIiwic3ViIjoibHV6aXZhbjIiLCJyb2xlIjoiQURNSU4iLCJleHAiOjE3MjEwNjYwOTB9.sosIOQOv4J0JR4x9fkT-8m39jrP9GQU18yjHnyr1Y7M"
+								"token": ""
 							}
 						},
 						"method": "POST",
@@ -140,7 +140,7 @@
 								},
 								{
 									"key": "name",
-									"value": "senhasluzivan.pdf",
+									"value": "arquivo.txt",
 									"type": "text"
 								}
 							]
@@ -165,15 +165,9 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "",
-									"type": "text"
-								}
-							]
+							"formdata": []
 						},
-						"url": "http://localhost:8080/api/read/{filename}"
+						"url": "http://localhost:8080/api/read/{arquivo.txt}"
 					},
 					"response": []
 				}
