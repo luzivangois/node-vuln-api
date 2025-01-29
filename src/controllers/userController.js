@@ -113,7 +113,7 @@ exports.deleteUser = async (req, res) => {
   const token = auth.split(' ')[1]
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY)
+    const decoded = jwt.decode(token)
 
     if (!decoded.isAdmin) {
       return res.status(403).send({ message: 'Acesso negado! Apenas administradores podem deletar usuários.' })
