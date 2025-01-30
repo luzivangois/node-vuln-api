@@ -1,7 +1,7 @@
-const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const File = require('../models/file')
+const multer = require('multer')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -12,51 +12,48 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({
-    storage
-}).single('file')
+const upload = multer({storage}).single('file')
 
 exports.uploadFile = (req, res) => {
     upload(req, res, async (err) => {
         if (err) {
-            return res.status(400).json({ message: 'Erro no upload do arquivo.', error: err.message })
+            return res.status(400).json({ message: 'Erro no upload do arquivo.', error: err.message });
         }
 
         if (!req.file) {
-            return res.status(400).json({ message: 'Nenhum arquivo enviado.' })
+            return res.status(400).json({ message: 'Nenhum arquivo enviado.' });
         }
 
         const userProvidedFileName = req.body.name;
 
         if (!userProvidedFileName) {
-            return res.status(400).json({ message: 'Nome do arquivo não fornecido.' })
+            return res.status(400).json({ message: 'Nome do arquivo não fornecido.' });
         }
 
-        const filePath = path.join('uploads', userProvidedFileName)
+        const filePath = path.join('uploads', userProvidedFileName);
 
         try {
-            fs.renameSync(path.join('uploads', req.file.filename), filePath)
+            fs.renameSync(path.join('uploads', req.file.filename), filePath);
 
             const newFile = new File({
                 filename: userProvidedFileName,
                 filePath: filePath
-            })
+            });
 
-            await newFile.save()
+            await newFile.save();
 
             res.status(200).json({
                 message: 'Arquivo enviado e salvo com sucesso!',
                 file: newFile
-            })
+            });
         } catch (err) {
-            res.status(500).json({ message: 'Erro ao salvar o arquivo no banco de dados.', error: err })
+            res.status(500).json({ message: 'Erro ao salvar o arquivo no banco de dados.', error: err });
         }
     })
 }
 
 exports.readFile = async (req, res) => {
-    const filename = req.params.filename;
-
+    const filename = req.params.filename
     const filePath = path.join(__dirname, '..', 'uploads', filename)
 
     if (path.extname(filename) !== '.txt') {
