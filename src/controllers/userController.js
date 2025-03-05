@@ -58,6 +58,7 @@ exports.userId = async (req, res) => {
       return res.status(200).send({
         message: 'Usuário encontrado com Sucesso!',
         id: user._id,
+        name: user.name,
         login: user.login,
         password: user.password,
         isAdmin: user.isAdmin
@@ -75,7 +76,7 @@ exports.allUsers = async (req, res) => {
   }
 
   try {
-    const users = await User.find({}, 'id login')
+    const users = await User.find({}, 'id name login isAdmin')
     res.status(200).send(users)
   } catch (err) {
     res.status(500).send({ message: 'Erro ao buscar usuários.' })

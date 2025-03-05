@@ -4,7 +4,7 @@ const userRoutes = require('./routes/routes')
 const cors = require('cors')
 
 const app = express()
-const PORT = 8080
+const PORT = 8081
 
 app.use(cors({
   origin: 'http://localhost:4200',
