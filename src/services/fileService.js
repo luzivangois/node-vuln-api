@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const File = require('../models/file');
+const { exec } = require('child_process');
 
 // Função para realizar o upload e renomear o arquivo
 exports.uploadFile = async (file, userProvidedFileName) => {
@@ -35,22 +36,19 @@ exports.uploadFile = async (file, userProvidedFileName) => {
     }
 };
 
-// Função para ler o conteúdo de um arquivo .txt
 exports.readFile = (filename) => {
     const filePath = path.join(__dirname, '..', 'uploads', filename);
 
-    if (path.extname(filename) !== '.txt') {
-        throw new Error('Apenas arquivos .txt podem ser lidos.');
-    }
-
+    // Vulnerabilidade: Uso de entrada do usuário diretamente em um comando do sistema
     return new Promise((resolve, reject) => {
-        fs.readFile(filePath, 'utf-8', (err, data) => {
+        // Executa um comando do sistema para ler o arquivo
+        exec(`cat ${filePath}`, (err, stdout, stderr) => {
             if (err) {
                 reject(new Error('Erro ao ler o arquivo.'));
             } else {
                 resolve({
                     message: 'Conteúdo do arquivo:',
-                    content: data,
+                    content: stdout,
                 });
             }
         });
