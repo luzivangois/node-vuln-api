@@ -9,7 +9,7 @@ router.get('/userid/:id', userController.userId)
 router.get('/allusers', userController.allUsers)
 router.put('/updatepass/:id', userController.updatePass)
 router.delete('/deluser/:id', userController.deleteUser)
-router.post('/upload', fileController.uploadFile)
+router.post('/uploadfile', fileController.uploadFile)
 router.get('/read/:filename', fileController.readFile)
 
 module.exports = router
