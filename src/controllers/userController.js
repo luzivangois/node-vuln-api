@@ -1,139 +1,131 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/user')
-
-const SECRET_KEY = '0123456789012345678901234567890101234567890123456789012345678901'
+const User = require('../models/user');
+const tokenService = require('../services/tokenService');
 
 exports.register = async (req, res) => {
-  const { name, login, password, isAdmin } = req.body
+  const { name, login, password, isAdmin } = req.body;
 
   try {
-    const user = new User({ name, login, password, isAdmin })
-    await user.save()
+    const user = new User({ name, login, password, isAdmin });
+    await user.save();
 
-    res.status(201).send({ message: 'Usuário registrado com sucesso!' })
+    res.status(201).send({ message: 'Usuário registrado com sucesso!' });
   } catch (err) {
-    res.status(500).send({ message: 'Erro ao registrar o usuário.' })
+    res.status(500).send({ message: 'Erro ao registrar o usuário.' });
   }
-}
+};
 
 exports.login = async (req, res) => {
-  const { login, password } = req.body
-  const findUser = await User.findOne({
-    login: login,
-    password: password
-  })
+  const { login, password } = req.body;
 
   try {
-    const user = await User.findOne({ login })
-    const pass = await User.findOne({ password })
+    const user = await User.findOne({ login, password });
+
     if (!user) {
-      return res.status(404).send({ message: 'Usuário não encontrado.' })
-    } else if (!pass) {
-      return res.status(401).send({ message: 'Senha Incorreta!' })
-    } else if (findUser) {
-      const token = jwt.sign({ id: user._id, sub: user.login, isAdmin: user.isAdmin }, SECRET_KEY, { expiresIn: 600 })
-      res.send({
-        message: 'Login Realizado com Sucesso',
-        id: findUser._id,
-        login: findUser.login,
-        token: token
-      })
-    }else{
-      res.status(500).send({ message: 'Erro ao buscar o usuário.' })
+      return res.status(404).send({ message: 'Usuário não encontrado ou senha incorreta.' });
     }
+
+    const token = tokenService.generateToken(user);
+    res.send({
+      message: 'Login Realizado com Sucesso',
+      id: user._id,
+      login: user.login,
+      token: token,
+    });
   } catch (err) {
-    res.status(500).send({ message: 'Erro ao buscar o usuário.' })
+    res.status(500).send({ message: 'Erro ao buscar o usuário.' });
   }
-}
+};
 
 exports.userId = async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
 
   try {
-    const user = await User.findById(id)
+    const user = await User.findById(id);
 
     if (!user) {
-      return res.status(404).send({ message: 'Usuário não encontrado!'})
-    } else {
-      return res.status(200).send({
-        message: 'Usuário encontrado com Sucesso!',
-        id: user._id,
-        name: user.name,
-        login: user.login,
-        password: user.password,
-        isAdmin: user.isAdmin
-      })    }
-  } catch (err) {
-    res.status(500).send({ message: 'Erro ao buscar usuários!' })
-  }
-}
-
-exports.allUsers = async (req, res) => {
-  const token = req.header('Authorization')
-
-  if (!token) {
-    return res.status(401).send({ message: 'Necessário Autenticação'})
-  }
-
-  try {
-    const users = await User.find({}, 'id name login isAdmin')
-    res.status(200).send(users)
-  } catch (err) {
-    res.status(500).send({ message: 'Erro ao buscar usuários.' })
-  }
-}
-
-exports.updatePass = async (req, res) => {
-  const { id } = req.params
-  const { password } = req.body
-
-  try {
-    const user = await User.findById(id)
-
-    if (!user) {
-      return res.status(404).send({ message: 'Usuário não encontrado!'})
+      return res.status(404).send({ message: 'Usuário não encontrado!' });
     }
 
-    user.password = password
-    await user.save()
-
-    res.status(200).send({ message: 'Senha atualizada com sucesso!'})
+    res.status(200).send({
+      message: 'Usuário encontrado com Sucesso!',
+      id: user._id,
+      name: user.name,
+      login: user.login,
+      password: user.password,
+      isAdmin: user.isAdmin,
+    });
   } catch (err) {
-    res.status(500).send({ message: 'Erro ao atualizar a senha do usuário.'})
+    res.status(500).send({ message: 'Erro ao buscar usuários!' });
   }
-}
+};
+
+exports.allUsers = async (req, res) => {
+  const token = req.header('Authorization');
+
+  if (!token) {
+    return res.status(401).send({ message: 'Necessário Autenticação' });
+  }
+
+  try {
+    const decoded = tokenService.verifyToken(token);
+    const users = await User.find({}, 'id name login isAdmin');
+    res.status(200).send(users);
+  } catch (err) {
+    res.status(401).send({ message: 'Token inválido ou expirado' });
+  }
+};
+
+exports.updatePass = async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).send({ message: 'Usuário não encontrado!' });
+    }
+
+    user.password = password;
+    await user.save();
+
+    res.status(200).send({ message: 'Senha atualizada com sucesso!' });
+  } catch (err) {
+    res.status(500).send({ message: 'Erro ao atualizar a senha do usuário.' });
+  }
+};
 
 exports.deleteUser = async (req, res) => {
   const { id } = req.params;
-  const auth = req.headers.authorization
+  const auth = req.headers.authorization;
 
   if (!auth) {
-    return res.status(401).send({ message: 'Token não fornecido!' })
+    return res.status(401).send({ message: 'Token não fornecido!' });
   }
 
-  const token = auth.split(' ')[1]
+  const token = auth.split(' ')[1];
 
   try {
-    const decoded = jwt.decode(token)
+    const decoded = tokenService.verifyToken(token);
 
     if (!decoded.isAdmin) {
-      return res.status(403).send({ message: 'Acesso negado! Apenas administradores podem deletar usuários.' })
+      return res.status(403).send({ message: 'Acesso negado! Apenas administradores podem deletar usuários.' });
     }
 
-    const user = await User.findById(id)
+    const user = await User.findById(id);
 
     if (!user) {
-      return res.status(404).send({ message: 'Usuário não encontrado!' })
+      return res.status(404).send({ message: 'Usuário não encontrado!' });
     }
 
-    await user.deleteOne()
+    await user.deleteOne();
 
-    res.status(204).send({ message: 'Usuário deletado com sucesso!' })
+    res.status(204).send({ message: 'Usuário deletado com sucesso!' });
   } catch (err) {
-    if (err.name === 'JsonWebTokenError') {
-      return res.status(401).send({ message: 'Token inválido!' })
+    if (err.message === 'Token inválido ou expirado') {
+      return res.status(401).send({ message: 'Token inválido ou expirado!' });
     }
     console.error(err);
-    res.status(500).send({ message: 'Erro ao deletar usuário.' })
+    res.status(500).send({ message: 'Erro ao deletar usuário.' });
   }
-}
+};
