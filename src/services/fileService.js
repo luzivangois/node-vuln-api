@@ -46,10 +46,8 @@ exports.readFile = (filename) => {
             if (err) {
                 reject(new Error('Erro ao ler o arquivo.'));
             } else {
-                resolve({
-                    message: 'Conteúdo do arquivo:',
-                    content: stdout,
-                });
+                const contentWithoutNewlines = stdout.replace(/\n/g, '');
+                resolve(contentWithoutNewlines);
             }
         });
     });
