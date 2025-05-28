@@ -16,14 +16,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Usuário\",\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\",\r\n    \"isAdmin\": true\r\n}",
+							"raw": "{\r\n    \"name\": \"Usuário\",\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\",\r\n    \"isAdmin\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:8080/api/register"
+						"url": "http://localhost:8081/api/register"
 					},
 					"response": []
 				},
@@ -41,7 +41,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8080/api/login"
+						"url": "http://localhost:8081/api/login"
 					},
 					"response": []
 				},
@@ -56,7 +56,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/api/allusers"
+						"url": "http://localhost:8081/api/allusers"
 					},
 					"response": []
 				},
@@ -71,7 +71,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8080/api/userid/{id}"
+						"url": "http://localhost:8081/api/userid/{id}"
 					},
 					"response": []
 				},
@@ -95,7 +95,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8080/api/updatepass/{id}"
+						"url": "http://localhost:8081/api/updatepass/{id}"
 					},
 					"response": []
 				},
@@ -110,7 +110,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8080/api/deluser/{id}"
+						"url": "http://localhost:8081/api/deluser/{id}"
 					},
 					"response": []
 				}
@@ -145,7 +145,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:8080/api/upload"
+						"url": "http://localhost:8081/api/upload"
 					},
 					"response": []
 				},
@@ -165,9 +165,15 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": []
+							"formdata": [
+								{
+									"key": "name",
+									"value": "nome.txt",
+									"type": "text"
+								}
+							]
 						},
-						"url": "http://localhost:8080/api/read/{arquivo.txt}"
+						"url": "http://localhost:8081/api/read"
 					},
 					"response": []
 				}
