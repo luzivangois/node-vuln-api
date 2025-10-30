@@ -11,7 +11,13 @@ exports.generateToken = (user) => {
     );
 };
 
-exports.verifyToken = (token) => {
+exports.verifyToken = (tokenOrHeader) => {
+    if (!tokenOrHeader || typeof tokenOrHeader !== 'string') {
+        throw new Error('Token inválido ou expirado');
+    }
+
+    const token = tokenOrHeader.replace(/^Bearer\s+/i, '');
+
     try {
         return jwt.decode(token, SECRET_KEY);
     } catch (err) {
