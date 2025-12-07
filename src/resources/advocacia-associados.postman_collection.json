@@ -16,14 +16,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Usuário\",\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\",\r\n    \"isAdmin\": false\r\n}",
+							"raw": "{\r\n    \"name\": \"Usuário\",\r\n    \"login\": \"usuario\",\r\n    \"password\": \"123\",\r\n    \"isAdmin\": false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:8081/api/register"
+						"url": "{{url_api}}/api/register"
 					},
 					"response": []
 				},
@@ -34,14 +34,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\": \"usuario\",\r\n    \"password\": \"senha\"\r\n}",
+							"raw": "{\r\n    \"login\": \"usuario\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:8081/api/login"
+						"url": "{{url_api}}/api/login"
 					},
 					"response": []
 				},
@@ -56,7 +56,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8081/api/allusers"
+						"url": "{{url_api}}/api/allusers"
 					},
 					"response": []
 				},
@@ -71,7 +71,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:8081/api/userid/{id}"
+						"url": "{{url_api}}/api/userid/{id}"
 					},
 					"response": []
 				},
@@ -95,7 +95,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8081/api/updatepass/{id}"
+						"url": "{{url_api}}/api/updatepass/{id}"
 					},
 					"response": []
 				},
@@ -110,7 +110,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:8081/api/deluser/{id}"
+						"url": "{{url_api}}/api/deluser/{id}"
 					},
 					"response": []
 				}
@@ -145,15 +145,12 @@
 								}
 							]
 						},
-						"url": "http://localhost:8081/api/upload"
+						"url": "{{url_api}}/api/uploadfile"
 					},
 					"response": []
 				},
 				{
 					"name": "Exibir Conteúdo do Arquivo",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -163,21 +160,41 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "nome.txt",
-									"type": "text"
-								}
-							]
-						},
-						"url": "http://localhost:8081/api/read"
+						"url": "{{url_api}}/api/read/{arquivo}"
 					},
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url_api",
+			"value": ""
 		}
 	]
 }
